@@ -1,0 +1,13 @@
+# --- OS / Editor ---
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# --- Environments / secrets ---
+.env
+.env.*
+*.local
