@@ -3,13 +3,13 @@
 > Volatile — what we're doing right now. Permanent rules & conventions live in [`AGENTS.md`](./AGENTS.md).
 
 **Project:** `code-match-3` — ECS web game template (Vue 3 + PixiJS v8 + BiteCS 0.4)
-**Tests:** 76/76 unit, typecheck clean, build clean
+**Tests:** 84/84 unit + 3 e2e, typecheck clean, build clean
 
 ---
 
 ## Active Feature
 
-→ [`test-sweep`](./features/test-sweep/intent.md) — full test suite sweep
+None — both features complete. Ready for the next feature (create it under `features/<name>/` with `intent.md` → `plan.md`).
 
 ---
 
@@ -18,7 +18,7 @@
 | Feature | Status | Link |
 |---------|--------|------|
 | platform | ✅ done | [intent](./features/platform/intent.md) · [plan](./features/platform/plan.md) · [acceptance](./features/platform/acceptance.md) |
-| test-sweep | 🔄 in progress | [intent](./features/test-sweep/intent.md) · [plan](./features/test-sweep/plan.md) |
+| test-sweep | ✅ done | [intent](./features/test-sweep/intent.md) · [plan](./features/test-sweep/plan.md) |
 
 ---
 

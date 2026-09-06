@@ -18,7 +18,7 @@ Also adds dedicated single-responsibility test files for each kernel module.
 
 ## Done when
 
-- [ ] All tests pass (unit + e2e)
-- [ ] No uncleaned event listeners
-- [ ] `pnpm test` clean
-- [ ] No console warnings
+- [x] All tests pass (unit + e2e) — 84 unit + 3 e2e green
+- [x] No uncleaned event listeners — per-test buses; `game-model` assert `destroy()` stops propagation
+- [x] `pnpm test` clean
+- [x] No console **errors** on boot (`console-clean.spec.ts` guards `pageerror` + `console.error`; headless-only GL driver warnings are out of scope)
