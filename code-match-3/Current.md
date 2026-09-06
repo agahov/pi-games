@@ -3,13 +3,17 @@
 > Volatile — what we're doing right now. Permanent rules & conventions live in [`AGENTS.md`](./AGENTS.md).
 
 **Project:** `code-match-3` — ECS web game template (Vue 3 + PixiJS v8 + BiteCS 0.4)
-**Tests:** 84/84 unit + 3 e2e, typecheck clean, build clean
+**Tests:** 96/96 unit + 3 e2e, typecheck clean, build clean
 
 ---
 
 ## Active Feature
 
-→ [`board`](./features/board/intent.md) — 8×8 centred grid of cells
+→ [`board`](./features/board/intent.md) — 8×8 centred grid of cells. **All automated
+gates green** (96 unit / 3 e2e / typecheck / build).
+Only remaining item: **Task 8 — manual `pnpm dev` glance** to visually confirm all 64
+cells are centered + stay fitted on resize (automated proxies: `acceptance.test.ts`
+stage 8 + `console-clean` are green).
 
 ---
 

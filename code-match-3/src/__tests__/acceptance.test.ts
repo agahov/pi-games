@@ -21,7 +21,10 @@ import { createCommandQueue } from '@/kernel/command-queue';
 import { createTypedBus } from '@/kernel/event-bus';
 import { createGameLoop, Phase, type Ticker } from '@/kernel/game-loop';
 import { handleCommand } from '@/ecs/systems/input-system';
-import { removeRenderSystem, removeWorldSystem } from '@/ecs/systems/render-system';
+import { renderSyncSystem, removeRenderSystem, removeWorldSystem } from '@/ecs/systems/render-system';
+import { buildBoard } from '@/ecs/systems/board';
+import { createCamera, fitCamera, applyCamera } from '@/pixi/camera';
+import { Container, type Graphics } from 'pixi.js';
 import { Position, Visual, Selected, RemovedComponent } from '@/ecs/components';
 import type { CommandMap, GameEventMap } from '@/types';
 
@@ -275,4 +278,34 @@ describe('acceptance — full pipeline', () => {
            expect(model.selectedEntity.value).toBe(clicked);
            expect(queue.pending).toBe(0);
             });
+
+     /* ── Stage 8: Board scene — build → renderSync (64) → camera centers ─── */
+  it('stage 8 — buildBoard(8×8) → renderSync → 64 graphics → camera centers', () => {
+    const ecs = createEcs();
+    const ids = buildBoard(ecs, { cols: 8, rows: 8, cellSize: 64, gap: 8 });
+
+    expect(ids).toHaveLength(64);
+    expect(ecs.query([Position, Visual])).toHaveLength(64);
+
+    // renderSyncSystem maps each cell to a real Graphics in a container.
+    const cameraContainer = new Container();
+    const containerMap = new Map<number, Graphics>();
+    renderSyncSystem(ecs, containerMap, cameraContainer);
+
+    expect(containerMap.size).toBe(64);
+    expect(cameraContainer.children).toHaveLength(64);
+
+    // Camera centers the 568px board in a 1000×1000 viewport.
+    const camera = createCamera();
+    fitCamera(camera, { width: 1000, height: 1000 }, { width: 568, height: 568 }, {
+      minWidth: 360,
+      maxWidth: 960,
+      padding: 48,
+     });
+    applyCamera(cameraContainer, camera);
+
+    expect(cameraContainer.position.x).toBe(48); // (1000 − 904) / 2
+    expect(cameraContainer.position.y).toBe(48);
+    expect(cameraContainer.scale.x).toBeCloseTo(904 / 568, 6);
+     });
 });
