@@ -9,7 +9,7 @@
 
 ## Active Feature
 
-None — both features complete. Ready for the next feature (create it under `features/<name>/` with `intent.md` → `plan.md`).
+→ [`board`](./features/board/intent.md) — 8×8 centred grid of cells
 
 ---
 
@@ -19,6 +19,7 @@ None — both features complete. Ready for the next feature (create it under `fe
 |---------|--------|------|
 | platform | ✅ done | [intent](./features/platform/intent.md) · [plan](./features/platform/plan.md) · [acceptance](./features/platform/acceptance.md) |
 | test-sweep | ✅ done | [intent](./features/test-sweep/intent.md) · [plan](./features/test-sweep/plan.md) |
+| board | 🔄 in progress | [intent](./features/board/intent.md) · [plan](./features/board/plan.md) |
 
 ---
 
