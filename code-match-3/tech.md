@@ -115,9 +115,61 @@ Pixi gets all input by default. HUD components opt into `pointer-events: auto`.
 
 - `bitecs@^0.4.0` — plain-object components, no `defineComponent`, no pre-compiled queries.
 - `createWorld(createEntityIndex())` — versioned entity IDs prevent stale-reference bugs.
-- `RemoveRenderSystem` queries `[RenderComponent, RemovedComponent]` per-frame (no observers).
-- `RemoveSystem` (last) calls `world.removeEntity` for all `[RemovedComponent]` entities.
+- `RemoveRenderSystem` queries `[Visual, RemovedComponent]` per-frame (no observers).
+- `RemoveWorldSystem` (last) calls `world.removeEntity` + `commitRemovals` for all `[RemovedComponent]` entities.
+
+## Command queue — Control vs Gameplay
+
+Two command categories, checked by `cmd.type` at push time:
+
+```
+ControlCommand:  resize, setParam          — always enqueued, even when queue is paused
+GameplayCommand: selectEntity, deselectAll, destroyEntity — blocked when queue is paused
+```
+
+- `pause()` sets a flag; **does not clear** the queue.
+- `push(cmd)` while paused: if `cmd.type ∈ CONTROL_TYPES` → enqueued; else → dropped.
+- `resume()` unblocks: gameplay commands accepted again.
+- Pre-pause commands remain in the queue and drain normally after resume.
+
+`CONTROL_TYPES` is a `Set<string>` in `src/types.ts`. Add control types there when extending.
+
+## Logger
+
+`src/kernel/logger.ts` — domain-scoped logger with runtime filtering.
+
+```ts
+const logger = createLogger([DOMAINS.ui, DOMAINS.selection]);
+
+logger.debug('click on tile');    // "[ui:selection] DEBUG click on tile"
+logger.setLevel('info');          // trace + debug suppressed
+logger.setDomains([DOMAINS.ui]);  // only ui-scoped loggers print
+logger.setDomains(null);          // restore all
+logger.setDomains([]);           // silence all
+```
+
+Domains: `init`, `loop`, `render`, `input`, `ui`, `selection`, `event`, `command`.
+Log at these points: module init (`info`), event emit (`debug`), command push (`debug`),
+render sync (`trace`), system registration (`info`).
 
 ## PoC scene
 
-3×3 grid of colored `PIXI.Container`s (9 entities). Click selects (+ highlight), Vue HUD shows `selectedEntity`. "Destroy" button adds `RemovedComponent` → `RemoveRenderSystem` cleans up → `RemoveSystem` deregisters. ~50 lines, exercises every layer.
+3×3 grid of colored `Graphics` containers (9 entities). Click selects (+ highlight via `Selected` flag in render),
+Vue HUD shows `selectedEntity`. "Destroy" button adds `RemovedComponent` → `removeRenderSystem` cleans up container
+→ `removeWorldSystem` deregisters entity. ~50 lines, exercises every layer.
+
+## Acceptance tests
+
+`src/__tests__/acceptance.test.ts` — 7 pipeline stages, each validating the previous:
+
+```
+   stage 1: createWorld → add 9 entities → query returns 9
+     stage 2: renderSyncSystem → containerMap has 9 entries
+       stage 3: handleCommand(selectEntity) → Selected set + event emitted
+         stage 4: GameLoop.tick() → queue drained, handleCommand runs
+           stage 5: bus.emit('entitySelected') → model.selectedEntity updated
+             stage 6: markRemoved → removeRenderSystem → removeWorldSystem → all layers clean
+               stage 7: full pipeline — click → queue → drain → handleCommand → bus → model in one tick
+```
+
+Each stage is independently testable and documents the full data flow.

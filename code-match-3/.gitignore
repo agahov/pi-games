@@ -41,6 +41,10 @@ yarn-error.log*
 .env.*
 *.local
 
+# --- Playwright ---
+test-results/
+playwright-report/
+
 # --- Node ---
 .pnp.*
 .yarn/
