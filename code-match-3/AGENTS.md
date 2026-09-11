@@ -31,8 +31,19 @@ Each feature lives in `features/<name>/`:
 - `acceptance.md` — acceptance criteria + proof (where useful).
 
 Drive a feature to completion top to bottom:
-`intent → plan (all tasks ✅) → tests → Current.md updated → next feature`.
+`intent → plan (all tasks ✅) → tests → **review** → Current.md updated → next feature`.
 See [`Current.md`](./Current.md) for the active feature and the feature index.
+
+### Review (the checker)
+
+Every feature passes the checklist in [`.pi/skills/review`](./.pi/skills/review/SKILL.md) — at
+PLAN review and again at "done". Six items: automated gates · clear interface · test
+coverage · low coupling · one-sentence functions · **general systems**. Item 6 runs the
+[`.pi/skills/ecs-design`](./.pi/skills/ecs-design/SKILL.md) probe (reuse / extract / justified
+one-off). A *too-small* framework surfaces as a **NEW feature**, not inline (one feature at a
+time). Optional stronger-model pass: run the whole checklist via `spawnAgent(model: "gpt-5.6-sol")`
+in a fresh context (that provider is reachable via the OpenAI login; it is NOT the default
+ollama model), then fold its verdict back.
 
 ### Commands
 
@@ -66,6 +77,8 @@ Pixi ──→ commands (inward) ──→ ECS
 
 ## When a Feature Is Done
 
+- **Review must pass:** the `.pi/skills/review` verdict is `READY TO DONE? yes` (items
+   1–5 PASS, item 6 resolved), posted to the feature's `acceptance.md`.
 - Mark all tasks ✅ in that feature's `plan.md`.
 - Move it to ✅ **done** in the Feature Index in `Current.md`, set the next
   feature to 🔄 **in progress**, and update the test-count line.
