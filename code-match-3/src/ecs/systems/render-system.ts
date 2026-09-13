@@ -15,7 +15,65 @@
 import { Graphics, type Container, type Renderer } from 'pixi.js';
 import type { EcsModule } from '../world';
 import { removeEntity, commitRemovals } from '../world';
-import { Position, Visual, RemovedComponent } from '../components';
+import {
+  Position,
+  Visual,
+  Selected,
+  RemovedComponent,
+  type VisualData,
+} from '../components';
+
+/* ── Appearance core (pure) ─────────────────────────────────────────────────── */
+
+/** The render style for the selected-cell highlight. */
+export interface SelectionStyle {
+  /** Highlight border colour. */
+  strokeColor: number;
+  /** Highlight border width (world px). */
+  strokeWidth: number;
+}
+
+/** Default selection highlight: a gold/amber border. */
+export const DEFAULT_SELECTION_STYLE: SelectionStyle = {
+  strokeColor: 0xff_cc_33,
+  strokeWidth: 4,
+};
+
+/** The resolved appearance to draw for one cell. */
+export interface CellAppearance {
+  /** Fill colour (always the cell's own `Visual.color`). */
+  fill: number;
+  /** Whether to also draw a highlight stroke (true iff selected). */
+  hasStroke: boolean;
+  /** Stroke colour (used when `hasStroke`). */
+  strokeColor: number;
+  /** Stroke width (used when `hasStroke`). */
+  strokeWidth: number;
+}
+
+/**
+ * Decide how to draw one cell. Pure: no Pixi, no world access.
+ *
+ * - Every cell fills its own `Visual.color` at `Visual.size`.
+ * - A *selected* cell additionally strokes the same rect with
+ *   `style.strokeColor` / `style.strokeWidth`; an unselected cell never strokes.
+ *
+ * @param visual   the cell's visual data
+ * @param selected whether the cell currently carries the `Selected` flag
+ * @param style    the highlight style (defaults to `DEFAULT_SELECTION_STYLE`)
+ */
+export function resolveCellAppearance(
+  visual: VisualData,
+  selected: boolean,
+  style: SelectionStyle = DEFAULT_SELECTION_STYLE,
+): CellAppearance {
+  return {
+    fill: visual.color,
+    hasStroke: selected,
+    strokeColor: style.strokeColor,
+    strokeWidth: style.strokeWidth,
+  };
+}
 
 /* ── renderSyncSystem ──────────────────────────────────────────────────────── */
 
@@ -26,16 +84,19 @@ import { Position, Visual, RemovedComponent } from '../components';
  * Existing entity  → update fill colour and position
  *
  * Graphics are drawn at origin (0,0) and positioned via .x/.y on the container.
+ * A `Selected` cell additionally gets a highlight stroke (see `resolveCellAppearance`).
  *
  * @param ecs          the ECS module
  * @param containerMap Map of EntityId → Graphics
  * @param stage        root Pixi container
+ * @param style        selection highlight style (defaults to `DEFAULT_SELECTION_STYLE`)
  * @param _renderer    Pixi renderer (unused in template stub)
  */
 export function renderSyncSystem(
   ecs: EcsModule,
   containerMap: Map<number, Graphics>,
   stage: Container,
+  style: SelectionStyle = DEFAULT_SELECTION_STYLE,
   _renderer?: Renderer,
 ): void {
   const ids = ecs.query([Position, Visual]);
@@ -54,10 +115,24 @@ export function renderSyncSystem(
     const vis = ecs.visuals.get(id);
     if (!pos || !vis || !gfx) continue;
 
+    const appearance = resolveCellAppearance(
+      vis,
+      ecs.hasComponent(id, Selected),
+      style,
+    );
+
     // Wipe and redraw at origin, then position the container in stage space.
     gfx.clear();
     gfx.rect(0, 0, vis.size, vis.size);
-    gfx.fill({ color: vis.color, alpha: 1 });
+    gfx.fill({ color: appearance.fill, alpha: 1 });
+    if (appearance.hasStroke) {
+      gfx.rect(0, 0, vis.size, vis.size);
+      gfx.stroke({
+        color: appearance.strokeColor,
+        width: appearance.strokeWidth,
+        alpha: 1,
+      });
+    }
     gfx.x = pos.x;
     gfx.y = pos.y;
   }

@@ -41,9 +41,8 @@ PLAN review and again at "done". Six items: automated gates · clear interface �
 coverage · low coupling · one-sentence functions · **general systems**. Item 6 runs the
 [`.pi/skills/ecs-design`](./.pi/skills/ecs-design/SKILL.md) probe (reuse / extract / justified
 one-off). A *too-small* framework surfaces as a **NEW feature**, not inline (one feature at a
-time). Optional stronger-model pass: run the whole checklist via `spawnAgent(model: "gpt-5.6-sol")`
-in a fresh context (that provider is reachable via the OpenAI login; it is NOT the default
-ollama model), then fold its verdict back.
+time). Optional stronger-model pass: run the whole checklist **headless in a fresh context** —
+`pi -p --provider openai-codex --model gpt-5.6-sol --thinking off --skill .pi/skills/review --skill .pi/skills/ecs-design --no-session @prompt.md` ("GPT Soul" via the native `openai-codex` OpenAI backend; the `cursor` mirror is spend-capped → fall back to `--provider ollama --model 'ornith-1.5:35b'`) — then fold its verdict back.
 
 ### Commands
 

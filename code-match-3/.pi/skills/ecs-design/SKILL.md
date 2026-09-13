@@ -114,21 +114,25 @@ its `config` param surface, its lifecycle + phase, and any "won't generalize" no
 
 ## Stronger-model option (optional)
 
-Because "is this a one-off or a missing General System?" is a cross-feature
-judgment a same-context agent can bias, run the review in a **fresh context** for
-a design you're unsure about:
+"is this a one-off or a missing General System?" is a cross-feature judgment a same-context
+agent can bias. Run the probe in a **fresh context** (headless `pi`; the `spawnAgent` tool
+is often absent here), then fold the verdict into `intent.md` — do *not* execute it blindly:
 
 ```
-spawnAgent:  prompt = "Run .pi/skills/ecs-design on this diff/design: <…>.
-                          Answer steps 1–5. Be adversarial about extract-vs-one-off."
-              model  = "gpt-5.6-sol"   (openai-codex provider; reachable via the
-                          OpenAI login — NOT the default ollama qwen3.8 model)
-              cwd    = project root
+# "GPT Soul" via the NATIVE OpenAI backend — VERIFIED REACHABLE NOW:
+#     pi -p --provider openai-codex --model gpt-5.6-sol --thinking off \
+#            --skill .pi/skills/ecs-design --approve --no-session @prompt.md
+#   prompt.md: "Run this diff/design through .pi/skills/ecs-design. Answer steps 1-5.
+#               Be adversarial about extract-vs-one-off."
+#
+# `cursor/gpt-5-6-sol@272k` is the CAPPED mirror (until 9/15/2026). Fall back to a LOCAL
+# model if/when EITHER caps:
+#     pi -p --provider ollama --model 'ornith-1.5:35b' --skill .pi/skills/ecs-design --no-session @prompt.md
 ```
 
-Use `gpt-5.6-sol` for the review (stronger reasoning in a fresh context); the
-implementer stays on the default local model. The subagent result must be folded
-back into `intent.md`, not executed blindly.
+Use `--provider openai-codex --model gpt-5.6-sol` (GPT Soul) for the *review* — stronger
+reasoning in a fresh context — while the *implementer* stays on the default local model
+(`qwen3.8:27b-mlx`).
 
 ---
 
@@ -137,8 +141,4 @@ back into `intent.md`, not executed blindly.
 - `buildBoard` / `renderSyncSystem` / `removeWorldSystem` / `handleCommand` are
   **four ad-hoc functions, three lifecycles, no shared `System` type.** Lifecycle
   is *invisible* — it lives only in how `main.ts` wires each one.
-- ⇒ **The "extended General System" is real and needed**: a typed `System`
-  `{name, lifecycle, phase, apply(ecs, config, ctx)}` + registry would let a
-  future `MovementSystem` (transitions + VFX) register cleanly and be reused by
-  feature-config. Record as a future feature, don't build it under another feature
-  (AGENTS.md: one feature at a time).
+- ⇒ **The "extended General System" is real and needed**, but the demo's *item 4* sharpens it: the first blocker is a **harness gap, not a new `System` type**. `EcsModule` has no per-frame `dt` (the callback takes none), no generic add/remove of a new `Animated` component, and `Position` is write-once (`addPosition`). Fix the harness first, then `MovementSystem` (transitions + VFX = ONE param-driven system) is its first consumer. Scaffolded as intent-only (not built): `features/general-system/` — don't build it under another feature (one at a time).

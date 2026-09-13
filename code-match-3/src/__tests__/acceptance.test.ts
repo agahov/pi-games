@@ -14,7 +14,7 @@
  * Run: `pnpm test:unit -- acceptance.test`
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { shallowRef } from 'vue';
 import { createEcs } from '@/ecs/world';
 import { createCommandQueue } from '@/kernel/command-queue';
@@ -24,7 +24,7 @@ import { handleCommand } from '@/ecs/systems/input-system';
 import { renderSyncSystem, removeRenderSystem, removeWorldSystem } from '@/ecs/systems/render-system';
 import { buildBoard } from '@/ecs/systems/board';
 import { createCamera, fitCamera, applyCamera } from '@/pixi/camera';
-import { Container, type Graphics } from 'pixi.js';
+import { Container, Graphics } from 'pixi.js';
 import { Position, Visual, Selected, RemovedComponent } from '@/ecs/components';
 import type { CommandMap, GameEventMap } from '@/types';
 
@@ -307,5 +307,29 @@ describe('acceptance — full pipeline', () => {
     expect(cameraContainer.position.x).toBe(48); // (1000 − 904) / 2
     expect(cameraContainer.position.y).toBe(48);
     expect(cameraContainer.scale.x).toBeCloseTo(904 / 568, 6);
+     });
+
+      /* ── Stage 9: Selection — a selected cell is stroked, others are not ──────── */
+  it('stage 9 — a selected cell is stroked; unselected cells are not', () => {
+    const ecs = createEcs();
+    buildBoard(ecs, { cols: 2, rows: 2, cellSize: 64, gap: 8 });
+    const target = ecs.query([Position, Visual])[1]!;
+
+    const container = new Container();
+    const containerMap = new Map<number, Graphics>();
+
+    const strokeSpy = vi.spyOn(Graphics.prototype, 'stroke');
+
+    // No selection yet: a sync pass strokes nothing.
+    renderSyncSystem(ecs, containerMap, container);
+    expect(containerMap.size).toBe(4);
+    expect(strokeSpy).not.toHaveBeenCalled();
+
+    // Select one cell, sync again: exactly one stroke — the selected one.
+    ecs.setSelected(target, true);
+    renderSyncSystem(ecs, containerMap, container);
+    expect(strokeSpy).toHaveBeenCalledTimes(1);
+
+    strokeSpy.mockRestore();
      });
 });

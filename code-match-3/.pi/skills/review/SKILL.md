@@ -1,6 +1,6 @@
 ---
 name: review
-description: General design + code review checklist for THIS ECS game, used by a reviewer (incl. a fresh-context gpt-5.6-sol subagent). Run it at a feature's PLAN review and again at "done"/acceptance. Checks that are broader than any one concern: automated gates green, clear interface, test coverage, low coupling, one-sentence functions, and — gated — whether a change reuses/generalizes a General System (item 6 runs the ecs-design skill). Triggers: "review", "run the reviewer", "before done", "sign off", a feature/PR close-out.
+description: General design + code review checklist for THIS ECS game, used by a reviewer — in-process, or **headless on a stronger model** (`pi -p --provider openai-codex --model gpt-5.6-sol`, "GPT Soul" via the native OpenAI backend; the `cursor` mirror is spend-capped → fall back to local `ornith-1.5:35b`). Run it at a feature's PLAN review and again at "done"/acceptance. Checks that are broader than any one concern: automated gates green, clear interface, test coverage, low coupling, one-sentence functions, and — gated — whether a change reuses/generalizes a General System (item 6 runs the ecs-design skill). Triggers: "review", "run the reviewer", "before done", "sign off", a feature/PR close-out.
 ---
 
 # Skill: Review (the checker)
@@ -59,20 +59,27 @@ Post the verdict into the feature's `acceptance.md`.
 ## Run it as a stronger-model reviewer (recommended for any design)
 
 Because items **2, 4, 6** are judgment the author can't see in their own work, run the
-whole checklist in a **fresh context on a stronger model**, then fold its verdict back:
+whole checklist in a **fresh context on a stronger model**, then fold its verdict back.
+Headless `pi` always works (the `spawnAgent` tool is often absent in this harness):
 
 ```
-spawnAgent:
-  prompt: "Run the .pi/skills/review checklist on this diff/feature: <…>.
-           Answer each item PASS/FAIL/NA. For item 6, actually open and run
-           .pi/skills/ecs-design. Be adversarial: assume every interface is too wide
-           and every coupling is too high until proven otherwise."
-  model: "gpt-5.6-sol"   # openai-codex provider — NOT the default ollama qwen3.8 model
-  cwd:  <project root>
+# "GPT Soul" = GPT-5.6 Sol via the NATIVE OpenAI backend — VERIFIED REACHABLE NOW
+#    (openai-codex, ChatGPT-Plus OAuth; NOT spend-capped when written):
+#     pi -p --provider openai-codex --model gpt-5.6-sol --thinking off \
+#            --skill .pi/skills/review --skill .pi/skills/ecs-design \
+#            --approve --no-session @prompt.md
+#   prompt.md: "Run the .pi/skills/review checklist on <diff/feature>. Answer each item
+#               PASS/FAIL/NA. For item 6, open + run .pi/skills/ecs-design. Be adversarial."
+#
+# The `cursor` mirror (cursor/gpt-5-6-sol@272k, via pi-cursor-sdk) IS spend-capped
+# until your cycle resets (9/15/2026 on the current plan). If EITHER caps, fall back
+# to a LOCAL model (free, no cap):
+#     pi -p --provider ollama --model 'ornith-1.5:35b' \
+#            --skill .pi/skills/review --skill .pi/skills/ecs-design --no-session @prompt.md
 ```
 
-The subagent only *reports*; the main agent applies the changes and folds the verdict
-into `acceptance.md`. Don't execute its suggestions blindly.
+The reviewer only *reports*; you apply changes and fold its verdict into `acceptance.md`.
+Don't execute its suggestions blindly.
 
 ## When to run
 

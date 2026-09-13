@@ -10,6 +10,8 @@ import {
   renderSyncSystem,
   removeRenderSystem,
   removeWorldSystem,
+  resolveCellAppearance,
+  DEFAULT_SELECTION_STYLE,
 } from '@/ecs/systems/render-system';
 import { createEcs } from '@/ecs/world';
 import { Position, Visual, RemovedComponent } from '@/ecs/components';
@@ -135,4 +137,33 @@ describe('render-system', () => {
     expect(ecs.query([Position])).toHaveLength(8);
     expect(ecs.query([RemovedComponent])).toHaveLength(0);
   });
+
+    /* ── resolveCellAppearance — the pure appearance core ─────────────────────── */
+  describe('resolveCellAppearance', () => {
+    const vis = { color: 0x33_88_ff, size: 64 };
+
+   it('unselected: fill is the cell colour, no stroke', () => {
+    expect(resolveCellAppearance(vis, false)).toEqual({
+      fill: 0x33_88_ff,
+      hasStroke: false,
+      strokeColor: DEFAULT_SELECTION_STYLE.strokeColor,
+      strokeWidth: DEFAULT_SELECTION_STYLE.strokeWidth,
+       });
+      });
+
+   it('selected: same fill plus the highlight stroke', () => {
+    expect(resolveCellAppearance(vis, true)).toEqual({
+      fill: 0x33_88_ff,
+      hasStroke: true,
+      strokeColor: 0xff_cc_33,
+      strokeWidth: 4,
+       });
+      });
+
+   it('honours a custom style', () => {
+    expect(
+      resolveCellAppearance(vis, true, { strokeColor: 0x00_ff_00, strokeWidth: 2 }),
+       ).toMatchObject({ strokeColor: 0x00_ff_00, strokeWidth: 2 });
+       });
+      });
 });
