@@ -1,6 +1,6 @@
 # 0012 — Game and RenderSystem
 
-Status: Planned
+Status: Done
 Role: implementer
 Prerequisite: [0011](0011-project-foundation.md) Done
 Feature: [centered square](../../features/001-square.md)
@@ -27,7 +27,17 @@ No PixiAdapter, browser rendering, gameplay controls, full-world snapshots, even
 
 ## Evidence
 
-Not run; implementation pending. Record commands and observed results here.
+- `npm run test:unit` — passed: 2 files and 3 tests passed, including the headless Game and fake renderer-port lifecycle tests.
+- `npm run test:e2e` — passed: 1 Chromium application-mount smoke test passed with no observed page or console errors.
+- `npm run typecheck` — passed: `vue-tsc --noEmit` completed successfully.
+- `npm run build` — passed: Vite 7.3.6 production build completed successfully.
+
+## Parent verification
+
+- Delegated only 0012 to `openai-codex/gpt-5.6-luna` with `--thinking max`.
+- Inspected Game/config/ECS storage, renderer port, RenderSystem, and headless tests. No Vue/PixiJS runtime imports in Game or RenderSystem; no later-task rendering implementation added.
+- Independently ran `npm run test:unit && npm run test:e2e && npm run typecheck && npm run build`: passed (3 unit tests across 2 files, 1 Chromium smoke test, typecheck, Vite production build).
+- Browser coverage remains foundation-only; visible-square acceptance waits for Pixi integration. Full independent feature review remains task 0015.
 
 ## Handoff
 
