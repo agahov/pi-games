@@ -1,6 +1,6 @@
 # Feature 001: centered square
 
-Status: **Planned** — implementation has not started.
+Status: **In progress** — task 0011 is underway.
 
 ## Outcome
 

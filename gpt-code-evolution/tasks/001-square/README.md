@@ -15,7 +15,7 @@ Execute in order, one task per run. Each task file owns its status and evidence;
 - Intent, workflow, and architecture established. Qwen timed out after partial checklist creation; Luna completed setup; parent reviewed scope and UI ownership.
 - Shared design separated into doc/; feature behavior stays in features/.
 - Prior documentation link scans passed (13 files, then 17 files).
-- Implementation has not started. No game acceptance tests have run.
+- Task 0011 foundation is complete; scaffold unit/browser checks, typecheck, and build pass. Game-feature acceptance remains pending. See task 0011 for the outstanding development-dependency audit findings.
 
 ## Shared references
 
