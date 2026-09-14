@@ -9,6 +9,7 @@ Feature: [centered square](../../features/001-square.md)
 
 - Use a fresh review context; follow [reviewer checklist](../../skills/reviewer.md).
 - Inspect dependency boundaries, entity/graphic lifecycle, async cleanup, test quality, and unnecessary abstractions against shared architecture.
+- Apply [extended ECS checklist](../../skills/ecs.md) and revisit the [first audit's E1/E2 proposals](../ecs-review/0001-checklist-audit.md). Record disposition and evidence; the user requested no immediate RenderSystem refactoring. Plan any necessary repair separately rather than silently changing the design.
 - Independently rerun the complete acceptance suite and inspect browser output.
 - Record demo instructions and observed results for initial display and resizing.
 - Update rules/checklists only for demonstrated reusable lessons; remove obsolete guidance rather than accumulating rules.

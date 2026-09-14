@@ -1,17 +1,10 @@
-# Technology stack
+# Stack
 
-Status: Selected; dependency versions verified during implementation.
+- **Language.** TypeScript.
+- **UI.** Vue; Vite for build/dev server.
+- **State.** bitECS.
+- **Graphics.** PixiJS.
+- **Tests.** Vitest for isolated checks; Playwright for browser acceptance.
+- **Versions.** package-lock.json is authoritative; inspect installed APIs before changes.
 
-| Concern | Technology |
-|---|---|
-| Language | TypeScript |
-| UI and canvas host | Vue |
-| Build/dev server | Vite |
-| Game state and systems | bitECS |
-| Graphics | PixiJS |
-| Isolated/API tests | Vitest |
-| Browser acceptance tests | Playwright |
-
-Keep game logic independent of Vue and PixiJS. Inspect installed library APIs before implementation; commit dependency versions and lockfile with the first implementation.
-
-Boundaries: [architecture.md](architecture.md).
+[Boundaries](architecture.md)

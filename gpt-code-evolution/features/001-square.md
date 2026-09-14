@@ -1,6 +1,6 @@
 # Feature 001: centered square
 
-Status: **In progress** — task 0012 is complete; task 0013 is next.
+Status: **In progress** — task 0013 is complete; task 0014 is next.
 
 ## Outcome
 

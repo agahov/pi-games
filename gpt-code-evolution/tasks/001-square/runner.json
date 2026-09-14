@@ -1,0 +1,15 @@
+{
+  "tasks": [
+    "tasks/001-square/0011-project-foundation.md",
+    "tasks/001-square/0012-game-render-system.md",
+    "tasks/001-square/0013-pixi-integration.md",
+    "tasks/001-square/0014-browser-acceptance.md",
+    "tasks/001-square/0015-review-demo-reflection.md"
+  ],
+  "checks": [
+    ["npm", "run", "test:unit"],
+    ["npm", "run", "test:e2e"],
+    ["npm", "run", "typecheck"],
+    ["npm", "run", "build"]
+  ]
+}

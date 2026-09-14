@@ -1,31 +1,20 @@
-# Vue ↔ Game ↔ presentation
-
-The Game owns bitECS. Vue owns UI-only state (focus, panels). Game-derived UI values flow through typed Game API queries and Composition into Vue; commands flow back through the Game API. Add each contract only when a feature needs it.
+# Communication map
 
 ```mermaid
 flowchart LR
-  UI[Vue / selected UI state] -->|typed Game API commands| API[Game API]
-  API --> G[Game owns bitECS]
-  API -->|typed UI projection via Composition, future| UI
-  G --> RS[RenderSystem queries ECS]
-  RS -->|small typed renderer port| PA[PixiAdapter]
-  PA --> P[Pixi resources and graphics]
-  C[Composition] -->|mount, resize, teardown| API
-  C --> PA
+  UI[Vue] -->|typed commands, when needed| API[Game API]
+  API -->|validated changes| ECS[(Game-owned ECS)]
+  API -->|UI projection via Composition| UI
+  ECS -->|read-only queries| RS[RenderSystem]
+  RS -->|create / update / remove| PA[PixiAdapter]
+  PA --> Graphics[Pixi graphics]
+  C[Composition] -->|order and lifetime| RS
+  C -->|initialization / resize / teardown| PA
+  C -->|lifetime| API
 ```
 
-| Boundary | Contract | Owner |
-|---|---|---|
-| Vue → Game | typed commands through Game API | Game validates and updates ECS |
-| Game → Vue | typed UI projection via Composition, when needed | Game owns source; Vue displays derived values |
-| UI-only state | focus, open panels | Vue |
-| ECS → presentation | RenderSystem queries ECS and emits typed create/update/remove operations | RenderSystem |
-| presentation → Pixi | small renderer port implemented by PixiAdapter | PixiAdapter |
+- **UI state.** Game-derived values are projections; focus/panels stay in Vue.
+- **Commands.** Added only for interaction; the static square needs none.
+- **Authority.** No direct Vue→ECS or UI→renderer synchronization.
 
-There is no render snapshot, event bus, or duplicate game hierarchy. RenderSystem reads the authoritative ECS world directly and PixiAdapter maintains only a mapping from ECS entity identifiers to Pixi graphics. That mapping is presentation lifecycle state, not game state.
-
-## Lifecycle
-
-Composition creates the Game and presentation, mounts PixiAdapter, connects resize observation, and requests presentation updates. Resize changes only PixiAdapter's uniform fit. It does not change ECS. Teardown disconnects observers and safely disposes Game and Pixi resources, including resources from initialization that resolves after unmount.
-
-See [shared architecture](architecture.md) for ownership and rendering policy; feature documents supply configuration values.
+[Boundary rationale](architecture.md)

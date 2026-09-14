@@ -1,9 +1,8 @@
-# Current work
+# Current
 
-Feature: [001-square](features/001-square.md) — **In progress**.
-
-Task index: [centered square](tasks/001-square/README.md).
-
-Next single task: [0013 — Pixi integration](tasks/001-square/0013-pixi-integration.md) — **Planned**.
-
-Task 0012 is complete. On the next implementation run, execute only 0013; leave later tasks for later runs.
+- **Feature.** [Centered square](features/001-square.md) — In progress.
+- **Next.** [0014 — Browser acceptance](tasks/001-square/0014-browser-acceptance.md) — Planned. One task per session.
+- **Order.** [Task index](tasks/001-square/README.md).
+- **Review.** [ECS audit](tasks/ecs-review/0001-checklist-audit.md) proposals remain unapplied; revisit in 0015. No RenderSystem refactor authorized.
+- **Runner.** [Setup complete](tasks/runner/0001-sequential-runner.md); [execution](doc/task-runner.md) requires a clean Git tree.
+- **Docs.** Minimal [list format](skills/documentation.md) applied to shared docs/checklists. [Project map](doc/README.md).

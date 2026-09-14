@@ -1,37 +1,16 @@
-# Shared architecture
+# Architecture
 
-Status: Selected; implementation pending.
+Implemented through square integration; full acceptance/review pending.
 
-```mermaid
-flowchart LR
-  UI[Vue UI] -->|typed commands, when needed| API[Game API]
-  API --> ECS[(Game-owned ECS)]
-  API -->|typed UI projection via Composition| UI
-  ECS -->|read-only queries| RS[RenderSystem]
-  RS -->|typed renderer port| PA[PixiAdapter]
-  PA --> PIXI[Pixi graphics]
-  C[Composition] -->|lifecycle and execution order| API
-  C --> RS
-  C --> PA
-```
+[Communication map](communication.md) · [ECS map](ecs-systems.md) · [Stack](tech-stack.md)
 
-| Owner | Responsibility |
-|---|---|
-| Game | Authoritative ECS state, game rules, typed commands and UI queries |
-| Vue | Host, controls, UI-only state; displays game-derived projections |
-| RenderSystem | Queries visual components; synchronizes create/update/remove through an injected renderer port |
-| PixiAdapter | Entity-to-graphic mapping, graphics lifecycle, world-to-screen transform |
-| Composition | Dependency wiring, execution order, host resize observation, safe async teardown |
-| Game configuration | Logical area dimensions and game-specific component values |
+- **Game.** Owns ECS and rules; typed commands/queries expose only needed UI behavior.
+- **Vue.** Owns host and UI-only state; never accesses ECS directly.
+- **RenderSystem.** Queries visual components through ECS; uses an injected rendering port.
+- **PixiAdapter.** Owns graphics, entity-to-graphic mapping, and viewport fitting.
+- **Composition.** Owns wiring, invocation order, resize observation, and async teardown.
+- **Configuration.** Game defines logical dimensions; presentation computes uniform fit. Resize never changes world state.
+- **Trade-off.** RenderSystem couples to ECS schema, isolating PixiJS without full-world snapshots or another game hierarchy.
+- **Deferred.** No event bus, simulation cadence, or generalized rendering until a feature needs it.
 
-## Decisions and trade-offs
-
-- ECS is the only game model. Pixi objects are presentation resources, not another gameplay hierarchy.
-- RenderSystem deliberately depends on ECS components; only PixiAdapter depends on PixiJS. Test RenderSystem with a fake renderer port.
-- Prefer direct typed calls. No full-world render snapshots or event bus without a demonstrated need.
-- Game API UI projections are derived game data; focus and open panels remain Vue-owned.
-- Rendering computes uniform fit from configured logical dimensions: `min(hostWidth / logicalWidth, hostHeight / logicalHeight)`. Device-pixel ratio affects sharpness, not world state.
-- Composition disconnects observers and releases resources on teardown, including initialization completing after unmount.
-- Introduce commands, simulation cadence, or generalized rendering operations only when required by a feature.
-
-Stack: [tech-stack.md](tech-stack.md). Communication detail: [communication.md](communication.md). Terms: [glossary.md](glossary.md).
+[ECS patterns](ecs-patterns.md) · [Glossary](glossary.md)

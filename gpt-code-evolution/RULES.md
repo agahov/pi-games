@@ -1,54 +1,24 @@
 # Rules
 
-Base, evolution-oriented rules for this self-improving development agent. They are
-general (not project-specific code details); feature specifics live in
-`features/*.md`. When a rule is obsolete, delete it; keep the checklist minimal.
+## Execution
 
-## Agent and routing
+- **Entry.** AGENTS.md → CURRENT.md → feature → next task.
+- **Routing.** Draft/Planned → planner; In progress → implementer; Test/Review → reviewer.
+- **Scope.** One task per worker session. No recursive delegation.
+- **Runner.** The [controller](doc/task-runner.md) may sequence fresh sessions: checks → independent review → local task commit. Stop on issues or decisions.
+- **Completion.** Record passing commands/results before marking Done. Missing tests are not passing tests.
 
-- The agent **is** this file-driven workflow: `AGENTS.md` (routing) +
-  `CURRENT.md` (pointer) + `skills/*.md` (checklists) + `RULES.md` (this file) +
-  `features/*.md` (work). It is **not** a custom pi extension, sub-agent, or tool;
-  no extension code or configuration is added for it.
-- One run does one thing: the **single next incomplete task**. No batching, no
-  speculative follow-ups, no recursive delegation to another agent workflow.
-- `AGENTS.md` routes by feature status: `Draft`/`Planned` → `skills/planner.md`,
-  `In progress` → `skills/implementer.md`, `Test`/`Review` → `skills/reviewer.md`.
-- `CURRENT.md` is the entry point: it points to the active feature and names the
-  next incomplete task. When the next task's nature differs from the status routing,
-  start the task by setting the status that matches it, then follow the checklist.
+## Documents
 
-## Status values
-
-`Draft` → `Planned` → `In progress` → `Test` → `Review` → `Done`. Each transition
-is an explicit, intentional update written to the feature file and `CURRENT.md`.
-
-## Evidence and claims
-
-- A task is "done" only when its **acceptance tests ran and passed**, with the
-  command and result recorded in its task plan. No unsupported success claims.
-- If a test runner or implementation does not exist yet, say so explicitly; do not
-  report a claim as verified.
-- Record evidence (command + observed result) at the task that requires it, not in
-  prose elsewhere.
-
-## Structure and language
-
-- Feature documents own behavior and acceptance criteria. `tasks/<feature-id>/README.md` owns task order; numbered task files own status, execution scope, acceptance commands, evidence, and handoff. CURRENT.md links the next task directly. Shared architecture, communication, and stack live once under `doc/`; link rather than duplicate.
-- Planner maintains this separation. Use `skills/architect.md` only for a new shared system/dependency or changed boundary, not as a mandatory phase for every feature.
-
-- Use the **ubiquitous language** and canonical terms defined in
-  [`doc/glossary.md`](doc/glossary.md). Rename a term repo-wide, do not add a synonym.
-- Docs explain **why and what boundaries exist**, not a restatement of code.
-- Diagrams are project maps (prefer Mermaid); keep prose minimal.
-- Each general concept/function should be explainable in one sentence; if not, split it.
+- **Format.** `- **Short title.** Details.` One point per item; minimum necessary text.
+- **Content.** Document project-specific intent, rationale, boundaries, and constraints—not obvious advice or code mechanics. Use [documentation checklist](skills/documentation.md).
+- **Ownership.** Features own behavior; task indexes own order; task files own status/evidence; doc/ owns shared decisions.
+- **Maps.** Diagrams orient; links locate details. Start at [project map](doc/README.md).
+- **Terms.** Use the [glossary](doc/glossary.md).
 
 ## Evolution
 
-- Feature work reuses existing general systems; add a new general system only when a
-  feature genuinely needs it, and each general system is described and tested in isolation.
-- Review/reflection updates change process docs **only when a lesson is reusable**.
-  Feature-specific notes stay in the feature file.
-- Keep phase artifacts clean: when a checklist or rule stops being used, remove it.
-  Completed task bodies move to `tasks/` history; durable knowledge stays in `doc/`,
-  `features/`, `src/`, `tests/`.
+- **ECS.** Apply the conditional [ECS checklist](skills/ecs.md); reuse data before adding systems.
+- **Architecture.** Use [architect](skills/architect.md) only for changed shared boundaries.
+- **Reflection.** Keep reusable lessons; remove obsolete rules. Findings do not authorize unsolicited refactoring.
+- **History.** Retain completed tasks under tasks/; durable decisions belong in doc/.

@@ -26,4 +26,8 @@ npm run typecheck
 npm run build
 ```
 
-The unit test is a foundation mount smoke test; it is not square-feature acceptance.
+The tests currently cover Game state, presentation fitting/lifecycle, and a basic visible-square browser scenario. Full feature acceptance and review are tracked in CURRENT.md.
+
+## Automated task execution
+
+See [task runner](doc/task-runner.md) for sequential Luna implementation, checks, review, and per-task commits. Preview with `python3 scripts/run_tasks.py`; execute explicitly with `--run` from a clean repository.

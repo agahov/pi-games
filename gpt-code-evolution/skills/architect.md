@@ -1,12 +1,9 @@
-# Architect checklist
+# Architect
 
-Conditional responsibility, not a mandatory feature phase or separate model.
+Only for new shared systems/dependencies or changed boundaries.
 
-Trigger: a feature requires a new shared system, dependency, or changed ownership/API boundary. The planner identifies the trigger; the same agent or a bounded architect subagent can perform this review.
-
-- [ ] Read shared architecture, stack, communication map, glossary, and relevant implementation.
-- [ ] Check whether existing systems plus game-specific data satisfy the feature first.
-- [ ] Document the smallest necessary shared change: ownership, typed contracts, dependency direction, isolated tests, and one trade-off.
-- [ ] Update canonical documents under doc/; use an ADR under doc/adr/ for a consequential decision needing durable alternatives/rationale.
-- [ ] Leave feature-specific dimensions, behavior, and acceptance criteria in the feature; execution steps and evidence in its task plan.
-- [ ] Ask the user only about consequential unresolved trade-offs. Link the decision from the task plan and return to planning; do not implement another task.
+- **Reuse.** Inspect existing design and code; try data changes first. Use [ECS checklist](ecs.md) when relevant.
+- **Decision.** Define ownership, contracts, ordering, isolated checks, and the main trade-off.
+- **Record.** Update canonical docs using [documentation format](documentation.md). Use an ADR only for consequential alternatives/rationale.
+- **Boundary.** Keep behavior in features; execution/evidence in tasks.
+- **Handoff.** Resolve consequential ambiguity with the user; return to planning. No implementation here.

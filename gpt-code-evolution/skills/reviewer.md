@@ -1,21 +1,10 @@
-# Reviewer checklist
+# Reviewer
 
-Used when a feature status is `Test` or `Review`. Independent of implementation.
+For Test / Review features. Use a fresh context.
 
-## Steps
-
-- [ ] Re-run the feature's **full** acceptance test set; record commands + results.
-- [ ] Confirm every acceptance test passed; record evidence, no unsupported claims.
-- [ ] Demo: describe the observed behaviour (visible square, resize, lifecycle) and
-      how to reproduce it.
-- [ ] Reflect: list any bug or friction found while completing the feature.
-- [ ] Apply a process/doc change **only** for a reusable lesson (update `RULES.md`,
-      a `skills/*.md`, `doc/*`); keep feature-specific notes in the feature file.
-- [ ] Keep docs clean: remove any checklist or rule now unused.
-
-## Transition
-
-- When all acceptance tests pass, the demo is captured, and reflection is resolved,
-  set status `Done`.
-- Move the completed task body to `tasks/` history; update `CURRENT.md` to the next
-  feature (or "none"). Stop; do not start new features in a review run.
+- **Evidence.** Rerun acceptance checks; record commands and results.
+- **Boundaries.** Inspect actual code and tests. For ECS, apply [ECS checklist](ecs.md).
+- **Demo.** Record observed behavior and reproduction steps.
+- **Reflection.** Keep only reusable process changes. Apply [documentation format](documentation.md).
+- **Findings.** Record severity and proposed repair. Do not silently refactor.
+- **Handoff.** Unresolved blockers → explicit repair task, feature In progress. Otherwise mark task/feature Done, retain task history, update CURRENT.md, and stop.
