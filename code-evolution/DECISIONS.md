@@ -152,15 +152,14 @@ At time of writing:
 - **To create** in `feature 000-bootstrap`: full agent core per §3, plus `feature 001` spec, plus scaffold for `game/`.
 - `intend/INTEND.md` is superseded by `DECISIONS.md`. Kept in `archive/` as raw reference.
 
-## 9. Open Questions
+: **Open Questions — resolved in v1**:
+- ✅ `cmd_bus`: typed event emitter (B), shared types module.
+- ✅ Vue reactive primitive: `shallowRef`. Coarse UI updates only; ECS handles per-entity changes.
+- ✅ PixiJS mount point: sibling `<div id="game">` in HTML body, not nested in Vue template.
 
-To be resolved in `feature 000-bootstrap`:
+**Open (deferred to bootstrap implementation):**
 - [ ] `OPEN.md` schema — free-form list or structured?
 - [ ] `game/` dir name — confirmed by design, not explicitly user-approved.
-- [ ] `cmd_bus` type — typed event emitter? string-keyed pub/sub? bitECS observer-based?
-- [ ] Command shape — TypeScript interface, or loosely-typed event object?
-- [ ] Vue reactive primitive — `shallowRef` or `ref`?
-- [ ] PixiJS mount point — inside a Vue `<canvas>` element, or a sibling DOM node?
 
 ## 10. What This Document Is
 

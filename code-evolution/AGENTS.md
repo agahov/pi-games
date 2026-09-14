@@ -1,14 +1,23 @@
-# Development Agent
+# Agent Core
+
+This is the self-improving development agent.
+
+## Startup
 
 1. Read [`CURRENT.md`](CURRENT.md).
-2. Open the feature linked there and check its status.
-3. Use the matching checklist:
-   - `Draft` or `Planned`: [`skills/planner.md`](skills/planner.md)
-   - `In progress`: [`skills/implementer.md`](skills/implementer.md)
-   - `Test` or `Review`: [`skills/reviewer.md`](skills/reviewer.md)
-4. Work on only the next incomplete task.
-5. Run the feature's acceptance tests.
-6. Update the task, feature status, and `CURRENT.md`.
-7. Apply [`RULES.md`](RULES.md) and review feedback for reusable improvements.
+2. Open the feature folder linked there.
+3. Run the full pipeline: `Define → Plan → Implement → Test → Judge → Optimize → Log`.
+3. Work only the next incomplete task.
+3. Apply [`RULES.md`](RULES.md) at every step.
+3. Update `CURRENT.md` when done.
 
-Ask the user only when an important ambiguity or blocker remains.
+## Process
+
+Load [`skills/REVIEWER.md`](skills/REVIEWER.md) during the **Judge** phase.
+All criteria come from [`CRITERIA.md`](CRITERIA.md).
+Evolution: if a criterion fails → write `reflection.md` → update `RULES.md`/`CRITERIA.md` → append to `LOG.md`.
+
+## Game
+
+The game is the benchmark. It lives in `game/`. See `DECISIONS.md §11` for the 3-layer architecture.
+Tech stack: Vue (UI) + PixiJS (render) + bitECS (logic). `cmd_bus` connects the layers.
