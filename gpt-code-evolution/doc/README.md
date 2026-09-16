@@ -16,7 +16,7 @@ flowchart TD
 ```
 
 - **Purpose.** [Intent](../intend/README.md).
-- **Behavior.** [Square feature](../features/001-square.md).
+- **Features.** [Change types](feature-types.md), [square](../features/001-square.md), [grid](../features/002-grid.md).
 - **Work.** [CURRENT](../CURRENT.md), [task index](../tasks/001-square/README.md).
 - **Design.** [Architecture](architecture.md), [communication](communication.md), [stack](tech-stack.md).
 - **ECS.** [System map](ecs-systems.md), [patterns](ecs-patterns.md).

@@ -6,7 +6,7 @@ For ECS components, queries, systems, or presentation integration.
 
 ## Plan
 
-- **Reuse.** Try existing values, component combinations, then justified tags before new systems.
+- **Reuse.** Try archetypes/defaults/initialization values, component combinations, then justified tags before new systems. Distinguish data changes from [behavior/visualization changes](../doc/feature-types.md).
 - **Responsibility.** One policy per system; one named operation per function. Multiple loops alone do not justify more systems.
 - **Contract.** Inspect query, reads/writes, effects, lifetime, and ordering. Document only non-obvious rationale.
 

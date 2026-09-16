@@ -28,4 +28,4 @@ Not run; implementation and review pending.
 
 If changes are needed, record findings and make the next bounded repair task explicit; set feature In progress and update CURRENT.md. Do not mark the feature Done.
 
-Otherwise mark this task and feature Done, retain this directory as task history, and set CURRENT.md to no active task. Stop.
+Otherwise mark this task and feature Done, retain this directory as task history, and point CURRENT.md to queued [feature 002](../../features/002-grid.md) / [task 0021](../002-grid/0021-grid-state.md), Planned. Stop; do not implement it in this session.
