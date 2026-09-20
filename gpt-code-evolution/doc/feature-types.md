@@ -51,4 +51,4 @@ flowchart TD
 - **Commands.** User intent sent to Game API.
 - **Behavior.** Interaction and feedback.
 
-[Terms](glossary.md) · [Format](../skills/documentation.md)
+[Terms](glossary.md) · [Format](documentation.md)

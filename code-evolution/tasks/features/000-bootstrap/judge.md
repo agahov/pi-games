@@ -1,66 +1,71 @@
-# Judge: 000-bootstrap
+# Judge: 000-bootstrap (v3)
 
 Date: 2025-01-01
 Feature: tasks/features/000-bootstrap/feature.md
+Criteria: doc/CRITERIA.md v3
 
-## Structure
+## Coupling & Structure
 
-### One sentence per function
-N/A — bootstrap is a document/process feature, no code functions written.
+### One function = one sentence / one idea
+N/A — no code yet.
 
-### Systems are independent
+### No cross-system imports
 N/A — no systems implemented.
 
-### General systems are reused
-N/A — no systems yet; first implementation is 001.
+### Open/closed: new feature = new component/entity
+N/A — no systems yet.
 
-### Low coupling
-N/A — no systems coupled or uncoupled yet.
+### Removing a feature edits ≤ 1 system
+N/A — no features implemented beyond bootstrap itself.
+
+## ECS
+
+### Components contain data only
+N/A — no bitECS world created yet.
 
 ## Documentation
 
-### Doc describes what code can't say
-✓ — `DECISIONS.md` records design rationale and evolution history (`WHY`). `RULES.md` and `CRITERIA.md` encode process rules that no code can express. `AGENTS.md` describes the run flow. These are all things code cannot say.
+### Doc only exists where code can't say the same thing
+✓ — All docs serve roles that don't exist in code: `AGENTS.md` (process), `RULES.md`/`CRITERIA.md` (principles/gates), `ARCHITECTURE.md` (design before code exists), `UBIQUITOUS_LANGUAGE.md` (glossary), `LOG.md` (history), `OPEN.md` (unresolved), `adrs/` (rationale/alternatives), `tasks/features/*/` (intent and verdict).
 
-### Diagrams are maps
-✓ — `DECISIONS.md §11` contains a 3-layer data-flow diagram that maps Vue / cmd_bus / bitECS / PixiJS interactions. This is not expressible in prose alone; it shows the topology. No superfluous diagrams.
+### Every diagram answers a question prose can't
+✓ — The Mermaid diagram in `ARCHITECTURE.md` shows 3-layer topology, nesting, bidirectional `cmd_bus` flow, and colour-coded layers. The prose "Data flow" section complements it with specific function names and data types, but the topology itself is visual-only. The two are complementary, not redundant.
 
-### Feature folder exists for every feature
-✓ — Both `000-bootstrap/` and `001-two-squares/` have `feature.md`. `001` has additional planned content. This is the first application of the rule.
+### Feature folder exists. Trivial features not exempt.
+✓ — Both `000-bootstrap/` and `001-two-squares/` have full feature folders with `feature.md`. `000-bootstrap` additionally has `plan.md` and `judge.md`.
 
-## ECS / Game Design
-
-### Components are data only
-N/A — no components defined in bootstrap.
-
-### Systems are pure functions of the world
-N/A — no systems implemented.
-
-### Entity types are open
-N/A — no entities created.
+### No duplicated concepts across docs
+✓ — Minor near-miss: the Mermaid diagram + prose "Data flow" section in `ARCHITECTURE.md` cover the same paths. They are complementary (topology vs. specifics), not duplicated definitions. `RULES.md` and `CRITERIA.md` maintain their intentional split (principle vs. gate). The glossary is the canonical definition; other docs reference not redefine.
 
 ## Process
 
-### Agent works on the next incomplete task only
-✓ — Only `000-bootstrap` was worked on. `CURRENT.md` now points to `001-two-squares`. Agent did not skip ahead.
+### Agent worked on the next incomplete task only
+✓ — `000-bootstrap` was the active, incomplete task in `CURRENT.md` throughout all three versions. No other task was worked on.
 
-### Each run produces `judge.md`. No judge = not done.
-✓ — This file satisfies the requirement for this run.
+### `judge.md` produced for this run
+✓ — This file.
 
-### A bug after a feature triggers `reflection.md`, not a hotfix
-N/A — no bugs found during bootstrap.
+### No hotfixes. Bugs resolved via `reflection.md`
+✓ — All changes across v1/v2/v3 were user-driven restructures, not bug fixes. No hotfix pattern.
 
-### `CURRENT.md` always shows the one active task and its status
-✓ — `CURRENT.md` shows `001-two-squares` as the active task with status `draft`. Updated at end of bootstrap.
+### `CURRENT.md` updated
+✓ — Updated after each version.
+
+### `LOG.md` updated if any principle changed
+✗ — `CRITERIA.md` was modified between v2 and v3: added "No duplicated concepts across docs." `LOG.md` v3 entry says "No criteria changes." This is incorrect. The criterion was added. No entry logged.
+Location: `doc/LOG.md` v3 entry vs `doc/CRITERIA.md`.
 
 ## Summary
 
 | Category | ✓ | ✗ | N/A |
 |---|---|---|---|
-| Structure | 0 | 0 | 4 |
-| Documentation | 3 | 0 | 0 |
-| ECS / Game Design | 0 | 0 | 3 |
-| Process | 3 | 0 | 1 |
-| **Total** | **6** | **0** | **8** |
+| Coupling & Structure | 0 | 0 | 4 |
+| ECS | 0 | 0 | 1 |
+| Documentation | 4 | 0 | 0 |
+| Process | 4 | 1 | 0 |
+| **Total** | **8** | **1** | **5** |
 
-No failures. No `reflection.md` required. Bootstrap is a process artifact — 8 of 14 criteria are N/A because there's no code yet. The 6 met are all about documentation and process discipline, which is what bootstrap was meant to establish.
+### Failed criteria
+- **LOG.md updated if any principle changed** — `LOG.md` v3 entry is wrong: it says "No criteria changes" but "No duplicated concepts across docs" was added to `CRITERIA.md`.
+
+→ See `reflection.md` for the proposed fix.

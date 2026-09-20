@@ -1,6 +1,6 @@
 # ECS patterns
 
-[System map](ecs-systems.md) · [Checklist](../skills/ecs.md)
+[System map](ecs-systems.md) · [Checklist](ecs-checklist.md)
 
 ## Selection
 

@@ -3,9 +3,9 @@
 1. Read [`CURRENT.md`](CURRENT.md).
 2. Open the feature linked there and check its status.
 3. Use the matching checklist:
-   - `Draft` or `Planned`: [`skills/planner.md`](skills/planner.md)
-   - `In progress`: [`skills/implementer.md`](skills/implementer.md)
-   - `Test` or `Review`: [`skills/reviewer.md`](skills/reviewer.md)
+   - `Draft` or `Planned`: [planner](.pi/skills/planner/SKILL.md)
+   - `In progress`: [implementer](.pi/skills/implementer/SKILL.md)
+   - `Test` or `Review`: [reviewer](.pi/skills/reviewer/SKILL.md)
 4. Work on only the next incomplete task.
 5. Run the feature's acceptance tests.
 6. Update the task, feature status, and `CURRENT.md`.

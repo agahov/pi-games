@@ -17,8 +17,3 @@ Execute in order, one task per run. Each task file owns its status and evidence;
 - Prior documentation link scans passed (13 files, then 17 files).
 - Task 0011 foundation is complete; scaffold unit/browser checks, typecheck, and build pass. Game-feature acceptance remains pending. See task 0011 for the outstanding development-dependency audit findings.
 
-## Shared references
-
-[Architecture](../../doc/architecture.md) · [Stack](../../doc/tech-stack.md) · [Communication](../../doc/communication.md)
-
-If a task needs a changed shared boundary, follow [architect checklist](../../skills/architect.md) before proceeding.

@@ -2,11 +2,11 @@
 
 For ECS components, queries, systems, or presentation integration.
 
-[System map](../doc/ecs-systems.md) · [Patterns](../doc/ecs-patterns.md)
+[System map](ecs-systems.md) · [Patterns](ecs-patterns.md)
 
 ## Plan
 
-- **Reuse.** Try archetypes/defaults/initialization values, component combinations, then justified tags before new systems. Distinguish data changes from [behavior/visualization changes](../doc/feature-types.md).
+- **Reuse.** Try archetypes/defaults/initialization values, component combinations, then justified tags before new systems. Distinguish data changes from [behavior/visualization changes](feature-types.md).
 - **Responsibility.** One policy per system; one named operation per function. Multiple loops alone do not justify more systems.
 - **Contract.** Inspect query, reads/writes, effects, lifetime, and ordering. Document only non-obvious rationale.
 
