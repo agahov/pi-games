@@ -2,7 +2,7 @@
 
 Feature: [001-square](../../features/001-square.md).
 
-Execute in order, one task per run. Each task file owns its status and evidence; this index owns order only.
+Execute in order, one task per run. Each task file owns its status and evidence; this index owns order only
 
 1. [0011 — Project foundation](0011-project-foundation.md)
 2. [0012 — Game and RenderSystem](0012-game-render-system.md)
